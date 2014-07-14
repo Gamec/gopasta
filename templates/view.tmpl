@@ -1,0 +1,21 @@
+<div class="row">
+  <div class="col-lg-12">
+    <h4>
+      {{.UID}}
+      <small>{{.CreatedAt.Format "2006-01-02 3:04pm"}}</small>
+    </h4>
+    <div class="pasta">{{.Content}}</div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-lg-12">
+    <h4>Add new one</h4>
+    <form action="/new" method="post">
+      <div class="form-group">
+        <textarea name="content" class="form-control"></textarea>
+      </div>
+      <button type="submit" class="btn btn-primary">Save</button>
+    </form>
+  </div>
+</div>
