@@ -1,6 +1,7 @@
 package main
 
 import (
+	"errors"
 	"labix.org/v2/mgo/bson"
 	"time"
 )
@@ -18,9 +19,18 @@ func PastaAll() []Pasta {
 	return pastas
 }
 
-func PastaGet(uid string) Pasta {
+func PastaGet(uid string) (Pasta, error) {
 	var pasta Pasta
-	DB.C("pastas").Find(bson.M{"uid": uid}).One(&pasta)
 
-	return pasta
+	// err here not working for some reason
+	if err := DB.C("pastas").Find(bson.M{"uid": uid}).One(&pasta); err != nil {
+		return pasta, err
+	}
+
+	// hack
+	if len(pasta.Content) == 0 {
+		return pasta, errors.New("Pasta not found")
+	}
+
+	return pasta, nil
 }

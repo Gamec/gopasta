@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"github.com/dchest/uniuri"
 	"github.com/go-martini/martini"
 	"github.com/martini-contrib/binding"
@@ -12,9 +13,8 @@ import (
 func main() {
 	m := martini.Classic()
 	m.Use(render.Renderer(render.Options{
-		Directory: "templates", // Specify what path to load the templates from.
-		Layout:    "layout",    // Specify a layout template. Layouts can call {{ yield }} to render the current template.
-
+		Directory: "templates",
+		Layout:    "layout",
 	}))
 
 	m.Get("/", func(r render.Render) {
@@ -28,16 +28,21 @@ func main() {
 		DB.C("pastas").Insert(pasta)
 
 		r.Redirect(pasta.UID)
-		//r.HTML(http.StatusOK, "view", PastaAll())
 	})
 
 	m.Get("/:uid", func(r render.Render, params martini.Params) {
-		r.HTML(http.StatusOK, "view", PastaGet(params["uid"]))
-	})
+		pasta, err := PastaGet(params["uid"])
 
-	// m.NotFound(func(r render.Render) {
-	// 	r.HTML(http.StatusNotFound, "view", PastaGet())
-	// })
+		fmt.Println(pasta)
+		fmt.Println(err)
+
+		if err != nil {
+			r.HTML(http.StatusNotFound, "404", nil)
+			return
+		}
+
+		r.HTML(http.StatusOK, "view", pasta)
+	})
 
 	m.Run()
 }
