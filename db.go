@@ -7,7 +7,7 @@ import (
 var DB *mgo.Database
 
 func init() {
-	session, err := mgo.Dial("mongodb://localhost")
+	session, err := mgo.Dial(os.Getenv("MONGOHQ_URL"))
 	if err != nil {
 		panic(err)
 	}
