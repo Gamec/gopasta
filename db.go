@@ -13,5 +13,5 @@ func init() {
 		panic(err)
 	}
 
-	DB = session.DB("gopasta")
+	DB = session.DB("")
 }
