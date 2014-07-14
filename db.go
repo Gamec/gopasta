@@ -2,6 +2,7 @@ package main
 
 import (
 	"labix.org/v2/mgo"
+	"os"
 )
 
 var DB *mgo.Database
